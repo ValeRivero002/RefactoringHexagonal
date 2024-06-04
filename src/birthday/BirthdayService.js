@@ -3,7 +3,10 @@ import path from "path";
 import { Employee } from "./Employee";
 
 export class BirthdayService {
-  constructor() {}
+  constructor(greeetingDelivery, employeesRepository) {
+    const SMTP_PORT= 25
+    
+  }
 
   sendGreetings(ourDate, fileName, smtpUrl, smtpPort, transport) {
     const data = fs.readFileSync(
