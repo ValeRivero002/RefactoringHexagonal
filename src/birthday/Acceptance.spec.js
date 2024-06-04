@@ -1,23 +1,27 @@
-import { OurDate } from "./OurDate";
-import { InMemoryTransport } from "./InMemoryTransport";
-import { BirthdayService } from "./BirthdayService";
+import { BirthdayService } from "./BirthdayService.js";
+import { FileEmployeeRepository } from "./FileEmployeeRepository.js";
+import { SMTPEmailService } from "./SMTPEmailService.js";
+import { InMemoryTransport } from "./InMemoryTransport.js";
+import { OurDate } from "./OurDate.js";
 
 describe("Acceptance", () => {
   const SMTP_PORT = 25;
   const SMTP_URL = "localhost";
-  const FILENAME = "employee_data.txt";
+  const FILENAME = "./src/birthday/employee_data.txt";
   let birthdayService;
-  let transport; // = new InMemoryTransport();
+  let emailService;
+  let transport;
 
   beforeEach(() => {
-    transport = new InMemoryTransport();
-    birthdayService = new BirthdayService();
+    transport = new InMemoryTransport(); // Movido aquí
+    emailService = new SMTPEmailService(SMTP_URL, SMTP_PORT, transport); // Corregido aquí
+    const employeeRepository = new FileEmployeeRepository(FILENAME);
+    birthdayService = new BirthdayService(employeeRepository, emailService);
   });
 
   it("base scenario", () => {
-    birthdayService.sendGreetings(
+    birthdayService.sendBirthdayGreeting(
       new OurDate("2008/10/08"),
-      "employee_data.txt",
       SMTP_URL,
       SMTP_PORT,
       transport
@@ -32,10 +36,9 @@ describe("Acceptance", () => {
     expect(tos[0]).toEqual("john.doe@foobar.com");
   });
 
-  it("will not send emails when nobodys birthday", () => {
-    birthdayService.sendGreetings(
+  it("will not send emails when nobody's birthday", () => {
+    birthdayService.sendBirthdayGreeting(
       new OurDate("2008/01/01"),
-      "employee_data.txt",
       SMTP_URL,
       SMTP_PORT,
       transport
@@ -45,9 +48,8 @@ describe("Acceptance", () => {
   });
 
   it("uses correct transport", () => {
-    birthdayService.sendGreetings(
+    birthdayService.sendBirthdayGreeting(
       new OurDate("2008/10/08"),
-      "employee_data.txt",
       SMTP_URL,
       SMTP_PORT,
       transport

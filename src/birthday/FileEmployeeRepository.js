@@ -1,8 +1,8 @@
 // adapters/FileEmployeeRepository.js
 import fs from "fs";
 import path from "path";
-import { Employee } from "../domain/Employee.js";
-import { EmployeeRepository } from "../ports/EmployeeRepository.js";
+import { Employee } from "./Employee.js";
+import { EmployeeRepository } from "./EmployeeRepository.js";
 
 export class FileEmployeeRepository extends EmployeeRepository {
   constructor(fileName) {

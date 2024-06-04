@@ -1,5 +1,5 @@
 // adapters/SMTPEmailService.js
-import { EmailService } from "../ports/EmailService.js";
+import { EmailService } from "./EmailService.js";
 
 export class SMTPEmailService extends EmailService {
   constructor(smtpUrl, smtpPort, transport) {
