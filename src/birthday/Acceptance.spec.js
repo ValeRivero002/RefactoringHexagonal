@@ -59,4 +59,4 @@ describe("Acceptance", () => {
     expect(message.host).toEqual(SMTP_URL);
     expect(message.port).toEqual(SMTP_PORT);
   });
-});
+});//
